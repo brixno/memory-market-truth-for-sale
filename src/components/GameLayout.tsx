@@ -24,6 +24,7 @@ type Props = {
 };
 
 type GameView = 'action' | 'board' | 'status';
+const ROUND_SPLASH_DURATION_MS = 3200;
 
 function FieldIcon({ field, size = 18 }: { field: CaseField; size?: number }) {
   if (field === 'suspect') return <UserRound size={size} />;
@@ -181,7 +182,7 @@ export default function GameLayout({ state, setState, onNewGame, onRules, onTuto
     }
 
     setRoundSplash(state.round);
-    const timer = window.setTimeout(() => setRoundSplash(null), 1850);
+    const timer = window.setTimeout(() => setRoundSplash(null), ROUND_SPLASH_DURATION_MS);
     return () => window.clearTimeout(timer);
   }, [state.round, config.rounds]);
 
