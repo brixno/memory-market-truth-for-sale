@@ -793,11 +793,252 @@ body::before {
     repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.028) 0 1px, transparent 1px 5px);
   opacity: 0.7;
   mix-blend-mode: screen;
+  animation: mm-scanline 14s ease-in-out infinite alternate;
 }
 
 #root {
   position: relative;
   z-index: 1;
+}
+
+@keyframes mm-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes mm-rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes mm-slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes mm-title-reveal {
+  from {
+    opacity: 0;
+    transform: translateX(-22px);
+    clip-path: inset(0 34% 0 0);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes mm-card-deal {
+  from {
+    opacity: 0;
+    transform: translateY(14px) rotateX(7deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotateX(0deg);
+  }
+}
+
+@keyframes mm-scanline {
+  from { transform: translateY(-18%); }
+  to { transform: translateY(18%); }
+}
+
+@keyframes mm-angled-scan {
+  from { transform: skewX(-10deg) translateY(-18%); }
+  to { transform: skewX(-10deg) translateY(18%); }
+}
+
+@keyframes mm-panel-glow {
+  0%, 100% { box-shadow: 0 26px 62px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.045); }
+  50% { box-shadow: 0 30px 72px rgba(0, 0, 0, 0.42), 0 0 28px rgba(132, 236, 207, 0.07), inset 0 1px 0 rgba(255, 255, 255, 0.055); }
+}
+
+@keyframes mm-progress-flow {
+  from { background-position: 0 0; }
+  to { background-position: 80px 0; }
+}
+
+@keyframes mm-status-blink {
+  0%, 100% { opacity: 0.65; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.18); }
+}
+
+@keyframes mm-modal-pop {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.app-shell,
+.setup-screen,
+.opening-screen {
+  animation: mm-fade-in 420ms ease both;
+}
+
+.opening-title {
+  animation: mm-title-reveal 760ms cubic-bezier(0.2, 0.9, 0.2, 1) both;
+}
+
+.opening-actions {
+  animation: mm-rise-in 560ms cubic-bezier(0.2, 0.9, 0.2, 1) 130ms both;
+}
+
+.opening-actions button,
+.play-view-tabs button,
+.setup-step-tab,
+.mode-card,
+.choice-card,
+.asset-tile,
+.candidate-token,
+.crew-card,
+.claim-tile,
+.comms-entry,
+.rank-card,
+.law-card,
+.claim-item,
+.log-entry,
+.setup-summary-strip span,
+.setup-fact-grid span,
+.score-grid span,
+.tutorial-flow-node,
+.tutorial-score-grid span {
+  animation: mm-card-deal 360ms cubic-bezier(0.2, 0.9, 0.2, 1) both;
+}
+
+.opening-actions button:nth-child(2),
+.play-view-tabs button:nth-child(2),
+.setup-step-tab:nth-child(2),
+.mode-card:nth-child(2),
+.choice-card:nth-child(2),
+.asset-tile:nth-child(2),
+.candidate-token:nth-child(2),
+.crew-card:nth-child(2),
+.claim-tile:nth-child(2),
+.comms-entry:nth-child(2),
+.rank-card:nth-child(2),
+.law-card:nth-child(2),
+.claim-item:nth-child(2),
+.log-entry:nth-child(2),
+.setup-summary-strip span:nth-child(2),
+.setup-fact-grid span:nth-child(2),
+.score-grid span:nth-child(2),
+.tutorial-flow-node:nth-child(2),
+.tutorial-score-grid span:nth-child(2) {
+  animation-delay: 55ms;
+}
+
+.setup-step-tab:nth-child(3),
+.play-view-tabs button:nth-child(3),
+.mode-card:nth-child(3),
+.choice-card:nth-child(3),
+.asset-tile:nth-child(3),
+.candidate-token:nth-child(3),
+.crew-card:nth-child(3),
+.claim-tile:nth-child(3),
+.comms-entry:nth-child(3),
+.rank-card:nth-child(3),
+.law-card:nth-child(3),
+.claim-item:nth-child(3),
+.log-entry:nth-child(3),
+.setup-summary-strip span:nth-child(3),
+.setup-fact-grid span:nth-child(3),
+.score-grid span:nth-child(3),
+.tutorial-flow-node:nth-child(3),
+.tutorial-score-grid span:nth-child(3) {
+  animation-delay: 95ms;
+}
+
+.mode-card:nth-child(4),
+.choice-card:nth-child(4),
+.asset-tile:nth-child(4),
+.candidate-token:nth-child(4),
+.crew-card:nth-child(4),
+.claim-tile:nth-child(4),
+.comms-entry:nth-child(4),
+.rank-card:nth-child(4),
+.log-entry:nth-child(4),
+.setup-fact-grid span:nth-child(4),
+.score-grid span:nth-child(4),
+.tutorial-flow-node:nth-child(4) {
+  animation-delay: 135ms;
+}
+
+.mode-card:nth-child(5),
+.asset-tile:nth-child(5),
+.candidate-token:nth-child(5),
+.crew-card:nth-child(5),
+.rank-card:nth-child(5),
+.log-entry:nth-child(5),
+.score-grid span:nth-child(5) {
+  animation-delay: 175ms;
+}
+
+.setup-panel-progressive,
+.case-briefing,
+.case-board,
+.action-console,
+.phase-panel,
+.trade-panel,
+.table-dashboard,
+.rules-modal,
+.tutorial-modal,
+.player-gate {
+  animation: mm-rise-in 430ms cubic-bezier(0.2, 0.9, 0.2, 1) both;
+}
+
+.setup-step-card,
+.inventory-section,
+.solution-box,
+.scoreboard > section,
+.tutorial-card {
+  animation: mm-rise-in 360ms cubic-bezier(0.2, 0.9, 0.2, 1) both;
+}
+
+.command-bar {
+  animation: mm-slide-down 420ms ease both;
+}
+
+.rules-modal,
+.tutorial-modal,
+.player-gate {
+  animation: mm-modal-pop 360ms cubic-bezier(0.2, 0.9, 0.2, 1) both;
+}
+
+.round-meter span,
+.coin-bar span {
+  transition: width 420ms cubic-bezier(0.2, 0.9, 0.2, 1);
+}
+
+.round-meter span {
+  background-size: 80px 100%;
+  animation: mm-progress-flow 2.4s linear infinite;
+}
+
+.dot,
+.status-orbit svg,
+.asset-icon {
+  animation: mm-status-blink 2.2s ease-in-out infinite;
 }
 
 button {
@@ -888,6 +1129,7 @@ select {
   transform: skewX(-10deg);
   opacity: 0.7;
   pointer-events: none;
+  animation: mm-angled-scan 8s ease-in-out infinite alternate;
 }
 
 .opening-title,
@@ -1176,6 +1418,7 @@ select {
     var(--bg-panel);
   box-shadow: 0 26px 62px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.045);
   backdrop-filter: blur(16px) saturate(1.18);
+  animation: mm-rise-in 430ms cubic-bezier(0.2, 0.9, 0.2, 1) both, mm-panel-glow 5.8s ease-in-out 900ms infinite;
 }
 
 .case-briefing {
@@ -2064,6 +2307,18 @@ select {
 .tutorial-actions span {
   color: #9fb1c5;
   font-weight: 900;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
+  }
 }
 
 @media (max-width: 1240px) {

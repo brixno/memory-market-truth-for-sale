@@ -233,7 +233,7 @@ export default function GameLayout({ state, setState, onNewGame, onRules, onTuto
           </nav>
 
           {gameView === 'action' && (
-            <section className="action-console focus-console">
+            <section className="action-console focus-console" key={`action-${state.round}-${state.phase}`}>
               <div className="console-header">
                 <span className="hud-kicker">ACTION CONSOLE</span>
                 <h2>{PHASE_LABELS[state.phase]}</h2>
@@ -245,7 +245,7 @@ export default function GameLayout({ state, setState, onNewGame, onRules, onTuto
           {gameView === 'board' && <CandidateBoard state={state} setState={setState} />}
 
           {gameView === 'status' && (
-            <section className="table-dashboard">
+            <section className="table-dashboard" key={`status-${state.round}-${state.phase}`}>
               <CrewPanel state={state} setState={setState} onTutorial={onTutorial} />
               <LogPanel state={state} />
             </section>
