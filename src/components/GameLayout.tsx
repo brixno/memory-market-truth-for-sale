@@ -157,6 +157,9 @@ function CrewPanel({ state, setState, onTutorial }: { state: GameState; setState
 export default function GameLayout({ state, setState, onNewGame, onRules, onTutorial }: Props) {
   const config = MODE_CONFIGS[state.mode];
   const [gameView, setGameView] = useState<GameView>('action');
+  const [roundSplash, setRoundSplash] = useState<number | null>(
+    state.phase === 'gameOver' || state.phase === 'finalSubmission' ? null : state.round
+  );
   const currentInstruction = useMemo(() => {
     if (state.phase === 'archiveSelection') return '이번 라운드에 갈 정보실이나 창구를 선택하세요.';
     if (state.phase === 'archiveResolution') return '비공개 공식 기록을 고르거나 몰린 정보실의 가격 제안을 처리합니다.';
@@ -169,6 +172,23 @@ export default function GameLayout({ state, setState, onNewGame, onRules, onTuto
 
   useEffect(() => {
     setGameView('action');
+  }, [state.phase]);
+
+  useEffect(() => {
+    if (state.phase === 'gameOver' || state.phase === 'finalSubmission' || state.round > config.rounds) {
+      setRoundSplash(null);
+      return;
+    }
+
+    setRoundSplash(state.round);
+    const timer = window.setTimeout(() => setRoundSplash(null), 1850);
+    return () => window.clearTimeout(timer);
+  }, [state.round, config.rounds]);
+
+  useEffect(() => {
+    if (state.phase === 'gameOver' || state.phase === 'finalSubmission') {
+      setRoundSplash(null);
+    }
   }, [state.phase]);
 
   const viewTabs: Array<{ id: GameView; labelKo: string; toneKo: string }> = [
@@ -200,6 +220,15 @@ export default function GameLayout({ state, setState, onNewGame, onRules, onTuto
 
   return (
     <div className="app-shell game-shell">
+      {roundSplash !== null && (
+        <div className="round-splash" key={`round-splash-${roundSplash}`} aria-live="polite">
+          <div className="round-splash-card">
+            <span>ROUND</span>
+            <strong>{roundSplash}</strong>
+            <small>{config.nameKo}</small>
+          </div>
+        </div>
+      )}
       <RoundHeader state={state} onSave={() => saveGame(state)} onRules={onRules} onNewGame={onNewGame} onTutorial={onTutorial} />
       <div className="game-grid focused-game-grid">
         <main className="stage-panel focused-stage">
