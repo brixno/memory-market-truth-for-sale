@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Clock3, Coins, FileCheck2, GraduationCap, KeyRound, MapPin, PackageSearch, Radio, Save, Shield, Upload, UserRound, UsersRound } from 'lucide-react';
 import { CASE_FIELDS, FIELD_LABELS, MODE_CONFIGS, PHASE_LABELS } from '../model/constants';
 import { fieldCandidates } from '../model/caseData';
@@ -22,6 +22,8 @@ type Props = {
   onRules: () => void;
   onTutorial: () => void;
 };
+
+type GameView = 'action' | 'board' | 'status';
 
 function FieldIcon({ field, size = 18 }: { field: CaseField; size?: number }) {
   if (field === 'suspect') return <UserRound size={size} />;
@@ -154,6 +156,7 @@ function CrewPanel({ state, setState, onTutorial }: { state: GameState; setState
 
 export default function GameLayout({ state, setState, onNewGame, onRules, onTutorial }: Props) {
   const config = MODE_CONFIGS[state.mode];
+  const [gameView, setGameView] = useState<GameView>('action');
   const currentInstruction = useMemo(() => {
     if (state.phase === 'archiveSelection') return '이번 라운드에 갈 정보실이나 창구를 선택하세요.';
     if (state.phase === 'archiveResolution') return '비공개 공식 기록을 고르거나 몰린 정보실의 가격 제안을 처리합니다.';
@@ -163,6 +166,16 @@ export default function GameLayout({ state, setState, onNewGame, onRules, onTuto
     if (state.phase === 'finalSubmission') return '정답과 공식 증거를 확정하세요. 같은 원본 묶음은 한 번만 유효합니다.';
     return '결과를 확인하세요.';
   }, [state.phase]);
+
+  useEffect(() => {
+    setGameView('action');
+  }, [state.phase]);
+
+  const viewTabs: Array<{ id: GameView; labelKo: string; toneKo: string }> = [
+    { id: 'action', labelKo: '지금 할 일', toneKo: PHASE_LABELS[state.phase] },
+    { id: 'board', labelKo: '추리 보드', toneKo: '후보 정리' },
+    { id: 'status', labelKo: '상황판', toneKo: '플레이어와 기록' }
+  ];
 
   const renderPhase = () => {
     switch (state.phase) {
@@ -188,11 +201,9 @@ export default function GameLayout({ state, setState, onNewGame, onRules, onTuto
   return (
     <div className="app-shell game-shell">
       <RoundHeader state={state} onSave={() => saveGame(state)} onRules={onRules} onNewGame={onNewGame} onTutorial={onTutorial} />
-      <div className="game-grid">
-        <CrewPanel state={state} setState={setState} onTutorial={onTutorial} />
-
-        <main className="stage-panel">
-          <section className="case-briefing">
+      <div className="game-grid focused-game-grid">
+        <main className="stage-panel focused-stage">
+          <section className="case-briefing compact-briefing">
             <div>
               <span className="hud-kicker">{state.caseEnvelopeId} · {config.nameKo}</span>
               <h2>{state.caseTitleKo}</h2>
@@ -207,18 +218,39 @@ export default function GameLayout({ state, setState, onNewGame, onRules, onTuto
             </details>
           </section>
 
-          <CandidateBoard state={state} setState={setState} />
+          <nav className="play-view-tabs" aria-label="플레이 화면 선택">
+            {viewTabs.map((tab) => (
+              <button
+                key={tab.id}
+                className={gameView === tab.id ? 'active' : ''}
+                type="button"
+                onClick={() => setGameView(tab.id)}
+              >
+                <strong>{tab.labelKo}</strong>
+                <span>{tab.toneKo}</span>
+              </button>
+            ))}
+          </nav>
 
-          <section className="action-console">
-            <div className="console-header">
-              <span className="hud-kicker">ACTION CONSOLE</span>
-              <h2>{PHASE_LABELS[state.phase]}</h2>
-            </div>
-            {renderPhase()}
-          </section>
+          {gameView === 'action' && (
+            <section className="action-console focus-console">
+              <div className="console-header">
+                <span className="hud-kicker">ACTION CONSOLE</span>
+                <h2>{PHASE_LABELS[state.phase]}</h2>
+              </div>
+              {renderPhase()}
+            </section>
+          )}
+
+          {gameView === 'board' && <CandidateBoard state={state} setState={setState} />}
+
+          {gameView === 'status' && (
+            <section className="table-dashboard">
+              <CrewPanel state={state} setState={setState} onTutorial={onTutorial} />
+              <LogPanel state={state} />
+            </section>
+          )}
         </main>
-
-        <LogPanel state={state} />
       </div>
     </div>
   );

@@ -939,6 +939,13 @@ select {
   padding: 1rem;
 }
 
+.focused-game-grid {
+  grid-template-columns: minmax(0, 1fr);
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
 .crew-panel,
 .comms-panel,
 .stage-panel {
@@ -1065,6 +1072,10 @@ select {
   gap: 1rem;
 }
 
+.focused-stage {
+  gap: 0.85rem;
+}
+
 .case-briefing,
 .case-board,
 .action-console {
@@ -1080,6 +1091,10 @@ select {
   gap: 1rem;
   padding: 1rem;
   align-items: center;
+}
+
+.compact-briefing {
+  grid-template-columns: minmax(240px, 1fr) minmax(240px, 0.72fr);
 }
 
 .case-briefing h2 {
@@ -1107,6 +1122,41 @@ select {
   background: #121e2c;
   border: 1px solid #2b3c52;
   color: #dfe9f3;
+}
+
+.play-view-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.play-view-tabs button {
+  display: grid;
+  gap: 0.2rem;
+  min-height: 72px;
+  padding: 0.78rem 0.9rem;
+  text-align: left;
+  border: 1px solid #253850;
+  border-radius: 8px;
+  background: #0f1926;
+  color: #dce7f2;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.play-view-tabs button:hover,
+.play-view-tabs button.active {
+  border-color: #76d9bd;
+  background: #13251f;
+}
+
+.play-view-tabs strong {
+  font-size: 1rem;
+}
+
+.play-view-tabs span {
+  color: #95a8bd;
+  font-size: 0.78rem;
+  font-weight: 800;
 }
 
 .case-board {
@@ -1261,6 +1311,23 @@ select {
 
 .action-console {
   padding: 1rem;
+}
+
+.focus-console {
+  min-height: clamp(360px, calc(100vh - 306px), 620px);
+}
+
+.table-dashboard {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.86fr) minmax(320px, 1.14fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.table-dashboard .crew-panel,
+.table-dashboard .comms-panel {
+  position: static;
+  max-height: none;
 }
 
 .console-header {
@@ -1871,7 +1938,8 @@ select {
   .game-grid,
   .command-bar,
   .case-briefing,
-  .board-grid {
+  .board-grid,
+  .table-dashboard {
     grid-template-columns: 1fr;
   }
 
@@ -1886,6 +1954,10 @@ select {
   .opening-screen {
     grid-template-columns: 1fr;
     align-content: center;
+  }
+
+  .play-view-tabs {
+    grid-template-columns: 1fr;
   }
 
   .opening-actions {
